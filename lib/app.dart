@@ -11,6 +11,7 @@ import 'screens/order_success_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/login_screen.dart';
 import 'constants/app_colors.dart';
+import 'widgets/connection_status.dart';
 
 class DeliveryApp extends StatelessWidget {
   const DeliveryApp({Key? key}) : super(key: key);
@@ -91,66 +92,75 @@ class DeliveryApp extends StatelessWidget {
             labelStyle: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const HomeScreen(),
-          '/cart': (context) => const CartScreen(),
-          '/checkout': (context) => const CheckoutScreen(),
-          '/profile': (context) => const ProfileScreen(),
-          '/login': (context) => const LoginScreen(),
-        },
-        onGenerateRoute: (settings) {
-          if (settings.name == '/order-success') {
-            final String orderId = settings.arguments as String;
-            return MaterialPageRoute(
-              builder: (context) => OrderSuccessScreen(orderId: orderId),
-            );
-          }
-          return null;
-        },
-        onUnknownRoute: (settings) {
-          return MaterialPageRoute(
-            builder:
-                (context) => Scaffold(
-                  appBar: AppBar(title: const Text('Страница не найдена')),
-                  body: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.error_outline,
-                          size: 80,
-                          color: AppColors.error,
-                        ),
-                        const SizedBox(height: 16),
-                        const Text(
-                          'Страница не найдена',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+        home: ConnectionStatus(
+          child: Navigator(
+            onGenerateRoute: (settings) {
+              Widget page;
+              switch (settings.name) {
+                case '/':
+                  page = const HomeScreen();
+                  break;
+                case '/cart':
+                  page = const CartScreen();
+                  break;
+                case '/checkout':
+                  page = const CheckoutScreen();
+                  break;
+                case '/profile':
+                  page = const ProfileScreen();
+                  break;
+                case '/login':
+                  page = const LoginScreen();
+                  break;
+                case '/order-success':
+                  final String orderId = settings.arguments as String;
+                  page = OrderSuccessScreen(orderId: orderId);
+                  break;
+                default:
+                  page = Scaffold(
+                    appBar: AppBar(title: const Text('Страница не найдена')),
+                    body: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            size: 80,
+                            color: AppColors.error,
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Маршрут ${settings.name} не существует',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.textSecondary,
+                          const SizedBox(height: 16),
+                          const Text(
+                            'Страница не найдена',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 24),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/');
-                          },
-                          child: const Text('На главную'),
-                        ),
-                      ],
+                          const SizedBox(height: 8),
+                          Text(
+                            'Маршрут ${settings.name} не существует',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/');
+                            },
+                            child: const Text('На главную'),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-          );
-        },
+                  );
+              }
+              return MaterialPageRoute(builder: (_) => page);
+            },
+            initialRoute: '/',
+          ),
+        ),
       ),
     );
   }
