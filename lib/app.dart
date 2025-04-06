@@ -1,0 +1,157 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/restaurant_provider.dart';
+import 'providers/cart_provider.dart';
+import 'providers/user_provider.dart';
+import 'providers/order_provider.dart';
+import 'screens/home_screen.dart';
+import 'screens/cart_screen.dart';
+import 'screens/checkout_screen.dart';
+import 'screens/order_success_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/login_screen.dart';
+import 'constants/app_colors.dart';
+
+class DeliveryApp extends StatelessWidget {
+  const DeliveryApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => RestaurantProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Atlas Доставка',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: AppColors.primary,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: AppColors.primary,
+            primary: AppColors.primary,
+            secondary: AppColors.accent,
+          ),
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            titleTextStyle: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            elevation: 4,
+            centerTitle: false,
+            iconTheme: const IconThemeData(color: Colors.white),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+            ),
+          ),
+          scaffoldBackgroundColor: AppColors.background,
+          dividerTheme: const DividerThemeData(
+            color: AppColors.divider,
+            thickness: 1,
+            space: 1,
+          ),
+          cardTheme: CardTheme(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            color: AppColors.card,
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.divider),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.divider),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.primary, width: 2),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
+          ),
+          tabBarTheme: const TabBarTheme(
+            labelColor: AppColors.primary,
+            unselectedLabelColor: AppColors.textSecondary,
+            indicatorColor: AppColors.primary,
+            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const HomeScreen(),
+          '/cart': (context) => const CartScreen(),
+          '/checkout': (context) => const CheckoutScreen(),
+          '/profile': (context) => const ProfileScreen(),
+          '/login': (context) => const LoginScreen(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == '/order-success') {
+            final String orderId = settings.arguments as String;
+            return MaterialPageRoute(
+              builder: (context) => OrderSuccessScreen(orderId: orderId),
+            );
+          }
+          return null;
+        },
+        onUnknownRoute: (settings) {
+          return MaterialPageRoute(
+            builder:
+                (context) => Scaffold(
+                  appBar: AppBar(title: const Text('Страница не найдена')),
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 80,
+                          color: AppColors.error,
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Страница не найдена',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Маршрут ${settings.name} не существует',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(context, '/');
+                          },
+                          child: const Text('На главную'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+          );
+        },
+      ),
+    );
+  }
+}
