@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Приложению требуется доступ к микрофону для голосового управления ИИ-помощником</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Приложению требуется распознавание речи для работы голосового помощника</string>
 </dict>
 </plist>

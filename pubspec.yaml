@@ -17,6 +17,8 @@ dependencies:
   cached_network_image: ^3.3.0
   intl: ^0.18.1
   connectivity_plus: ^5.0.2
+  flutter_tts: ^3.8.5
+  speech_to_text: ^7.0.0
 
 dev_dependencies:
   flutter_test:
