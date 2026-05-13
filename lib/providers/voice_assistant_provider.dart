@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../services/voice_assistant_service.dart';
+import '../services/gemini_service.dart';
 
 class VoiceAssistantProvider extends ChangeNotifier {
   final VoiceAssistantService _service = VoiceAssistantService();
+  final GeminiService _geminiService = GeminiService();
   String _userInput = '';
   String _assistantResponse = '';
   bool _isProcessing = false;
@@ -71,6 +73,9 @@ class VoiceAssistantProvider extends ChangeNotifier {
   Future<void> startListening() async {
     if (_isListening) return;
 
+    // Останавливаем текущее воспроизведение
+    await _service.stop();
+
     _isListening = true;
     _recognitionStatus = 'Слушаю...';
     notifyListeners();
@@ -132,45 +137,17 @@ class VoiceAssistantProvider extends ChangeNotifier {
 
     debugPrint('Обработка ввода: $_userInput');
 
-    // Имитация обработки запроса
-    await Future.delayed(const Duration(seconds: 1));
+    try {
+      // Получаем ответ от Gemini
+      _assistantResponse = await _geminiService.sendMessage(_userInput);
+      debugPrint('Ответ Gemini: $_assistantResponse');
 
-    final lowerInput = _userInput.toLowerCase();
-
-    // Простая логика для отображения работы помощника с поддержкой английского
-    if (lowerInput.contains('пицц') || lowerInput.contains('pizza')) {
-      _assistantResponse =
-          'Добавляю пиццу в корзину. Какую пиццу вы хотите заказать?';
-    } else if (lowerInput.contains('маргарит') ||
-        lowerInput.contains('margarita')) {
-      _assistantResponse =
-          'Добавляю пиццу Маргарита в корзину. Что-нибудь еще?';
-    } else if (lowerInput.contains('pepperoni') ||
-        lowerInput.contains('пеперони')) {
-      _assistantResponse =
-          'Добавляю пиццу Пепперони в корзину. Что-нибудь еще?';
-    } else if (lowerInput.contains('суши') ||
-        lowerInput.contains('sushi') ||
-        lowerInput.contains('роллы') ||
-        lowerInput.contains('rolls')) {
-      _assistantResponse =
-          'Добавляю суши в корзину. Какие именно роллы вы предпочитаете?';
-    } else if (lowerInput.contains('доставк') ||
-        lowerInput.contains('delivery')) {
-      _assistantResponse =
-          'Ваш заказ будет доставлен в течение 40 минут. Подтверждаете заказ?';
-    } else if (lowerInput.contains('да') ||
-        lowerInput.contains('yes') ||
-        lowerInput.contains('подтверж') ||
-        lowerInput.contains('confirm')) {
-      _assistantResponse = 'Отлично! Ваш заказ оформлен. Ожидайте доставку.';
-    } else {
-      _assistantResponse =
-          'Я могу помочь вам с заказом еды. Что вы хотите заказать?';
+      // Озвучиваем ответ
+      await _service.speak(_assistantResponse);
+    } catch (e) {
+      debugPrint('Ошибка при обработке запроса: $e');
+      _assistantResponse = 'Извините, произошла ошибка при обработке запроса.';
     }
-
-    debugPrint('Ответ ассистента: $_assistantResponse');
-    await _service.speak(_assistantResponse);
 
     _isProcessing = false;
     notifyListeners();

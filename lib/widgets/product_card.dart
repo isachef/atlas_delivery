@@ -26,13 +26,15 @@ class ProductCard extends StatelessWidget {
 
     // Получаем изображение для продукта на основе его категории
     final productImage =
-        product.imageUrl.contains('placeholder') || product.imageUrl.isEmpty
-            ? FoodImages.getRandomForCategory(product.category)
+        product.imageUrl.contains('placeholder') ||
+                product.imageUrl.isEmpty ||
+                product.imageUrl.contains('assets/')
+            ? FoodImages.getImageForCategory(product.category)
             : product.imageUrl;
 
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: () {
           showModalBottomSheet(
@@ -42,7 +44,7 @@ class ProductCard extends StatelessWidget {
             builder: (context) => _buildProductDetails(context),
           );
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -51,27 +53,35 @@ class ProductCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
                   ),
-                  child: Image.network(
-                    productImage,
-                    height: 120,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 120,
-                        width: double.infinity,
-                        color: AppColors.background,
-                        child: const Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: AppColors.primary,
-                        ),
-                      );
-                    },
-                  ),
+                  child:
+                      productImage.startsWith('assets/')
+                          ? Image.asset(
+                            productImage,
+                            height: 140,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          )
+                          : Image.network(
+                            productImage,
+                            height: 140,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                height: 140,
+                                width: double.infinity,
+                                color: AppColors.background,
+                                child: const Icon(
+                                  Icons.fastfood,
+                                  size: 50,
+                                  color: AppColors.primary,
+                                ),
+                              );
+                            },
+                          ),
                 ),
                 // Кнопка добавления в избранное
                 Positioned(
@@ -218,8 +228,10 @@ class ProductCard extends StatelessWidget {
 
     // Получаем изображение для продукта на основе его категории
     final productImage =
-        product.imageUrl.contains('placeholder') || product.imageUrl.isEmpty
-            ? FoodImages.getRandomForCategory(product.category)
+        product.imageUrl.contains('placeholder') ||
+                product.imageUrl.isEmpty ||
+                product.imageUrl.contains('assets/')
+            ? FoodImages.getImageForCategory(product.category)
             : product.imageUrl;
 
     return Container(
@@ -238,24 +250,32 @@ class ProductCard extends StatelessWidget {
           // Изображение продукта
           ClipRRect(
             borderRadius: BorderRadius.circular(screenUtils.getRadius(12)),
-            child: Image.network(
-              productImage,
-              height: screenUtils.getHeight(200),
-              width: double.infinity,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  height: screenUtils.getHeight(200),
-                  width: double.infinity,
-                  color: AppColors.background,
-                  child: Icon(
-                    Icons.fastfood,
-                    size: screenUtils.getSize(60),
-                    color: AppColors.primary,
-                  ),
-                );
-              },
-            ),
+            child:
+                productImage.startsWith('assets/')
+                    ? Image.asset(
+                      productImage,
+                      height: screenUtils.getHeight(220),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    )
+                    : Image.network(
+                      productImage,
+                      height: screenUtils.getHeight(220),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: screenUtils.getHeight(220),
+                          width: double.infinity,
+                          color: AppColors.background,
+                          child: Icon(
+                            Icons.fastfood,
+                            size: screenUtils.getSize(60),
+                            color: AppColors.primary,
+                          ),
+                        );
+                      },
+                    ),
           ),
           SizedBox(height: screenUtils.getHeight(16)),
 

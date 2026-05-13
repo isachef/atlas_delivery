@@ -33,24 +33,32 @@ class RestaurantCard extends StatelessWidget {
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
                   ),
-                  child: Image.network(
-                    restaurant.imageUrl,
-                    height: 150,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 150,
-                        width: double.infinity,
-                        color: AppColors.background,
-                        child: const Icon(
-                          Icons.restaurant,
-                          size: 50,
-                          color: AppColors.primary,
-                        ),
-                      );
-                    },
-                  ),
+                  child:
+                      restaurant.imageUrl.startsWith('assets/')
+                          ? Image.asset(
+                            restaurant.imageUrl,
+                            height: 150,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          )
+                          : Image.network(
+                            restaurant.imageUrl,
+                            height: 150,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                height: 150,
+                                width: double.infinity,
+                                color: AppColors.background,
+                                child: const Icon(
+                                  Icons.restaurant,
+                                  size: 50,
+                                  color: AppColors.primary,
+                                ),
+                              );
+                            },
+                          ),
                 ),
                 // Кнопка добавления в избранное
                 Positioned(

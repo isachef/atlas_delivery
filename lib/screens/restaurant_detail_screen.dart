@@ -89,38 +89,40 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen>
             slivers: [
               // AppBar с изображением ресторана
               SliverAppBar(
-                expandedHeight: 200.0,
+                expandedHeight: 250.0,
                 pinned: true,
                 backgroundColor: AppColors.primary,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
-                        restaurant.imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: AppColors.primary.withOpacity(0.8),
-                            child: const Center(
-                              child: Icon(
-                                Icons.restaurant,
-                                size: 80,
-                                color: Colors.white,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                      restaurant.imageUrl.startsWith('assets/')
+                          ? Image.asset(restaurant.imageUrl, fit: BoxFit.cover)
+                          : Image.network(
+                            restaurant.imageUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: AppColors.primary.withOpacity(0.8),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.restaurant,
+                                    size: 80,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                       Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              Colors.black.withOpacity(0.6),
+                              Colors.black.withOpacity(0.7),
                               Colors.transparent,
-                              Colors.black.withOpacity(0.6),
+                              Colors.black.withOpacity(0.7),
                             ],
                           ),
                         ),
@@ -132,6 +134,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen>
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
+                      fontSize: 22,
                     ),
                   ),
                 ),

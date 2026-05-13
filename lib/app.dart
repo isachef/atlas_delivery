@@ -11,6 +11,7 @@ import 'screens/checkout_screen.dart';
 import 'screens/order_success_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/chat_screen.dart';
 import 'constants/app_colors.dart';
 import 'widgets/connection_status.dart';
 import 'widgets/floating_assistant_button.dart';
@@ -120,6 +121,9 @@ class DeliveryApp extends StatelessWidget {
                     case '/order-success':
                       final String orderId = settings.arguments as String;
                       page = OrderSuccessScreen(orderId: orderId);
+                      break;
+                    case '/chat':
+                      page = const ChatScreen();
                       break;
                     default:
                       page = Scaffold(
