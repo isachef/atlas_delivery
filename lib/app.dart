@@ -110,6 +110,9 @@ class DeliveryApp extends StatelessWidget {
                       final String orderId = settings.arguments as String;
                       page = OrderSuccessScreen(orderId: orderId);
                       break;
+                    case '/chat':
+                      page = const ChatScreen();
+                      break;
                     default:
                       page = Scaffold(
                         appBar: AppBar(title: const Text('Страница не найдена')),
