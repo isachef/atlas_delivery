@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/restaurant_provider.dart';
+
+import 'constants/app_colors.dart';
 import 'providers/cart_provider.dart';
-import 'providers/user_provider.dart';
 import 'providers/order_provider.dart';
+import 'providers/restaurant_provider.dart';
+import 'providers/user_provider.dart';
 import 'providers/voice_assistant_provider.dart';
-import 'screens/home_screen.dart';
 import 'screens/cart_screen.dart';
 import 'screens/checkout_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
 import 'screens/order_success_screen.dart';
 import 'screens/profile_screen.dart';
-import 'screens/login_screen.dart';
-import 'constants/app_colors.dart';
 import 'widgets/connection_status.dart';
 import 'widgets/floating_assistant_button.dart';
 
@@ -41,10 +42,7 @@ class DeliveryApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
-            titleTextStyle: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            titleTextStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             elevation: 4,
             centerTitle: false,
             iconTheme: const IconThemeData(color: Colors.white),
@@ -56,16 +54,10 @@ class DeliveryApp extends StatelessWidget {
             ),
           ),
           scaffoldBackgroundColor: AppColors.background,
-          dividerTheme: const DividerThemeData(
-            color: AppColors.divider,
-            thickness: 1,
-            space: 1,
-          ),
-          cardTheme: CardTheme(
+          dividerTheme: const DividerThemeData(color: AppColors.divider, thickness: 1, space: 1),
+          cardTheme: CardThemeData(
             elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             color: AppColors.card,
           ),
           inputDecorationTheme: InputDecorationTheme(
@@ -83,12 +75,9 @@ class DeliveryApp extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: AppColors.primary, width: 2),
             ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           ),
-          tabBarTheme: const TabBarTheme(
+          tabBarTheme: const TabBarThemeData(
             labelColor: AppColors.primary,
             unselectedLabelColor: AppColors.textSecondary,
             indicatorColor: AppColors.primary,
@@ -123,25 +112,16 @@ class DeliveryApp extends StatelessWidget {
                       break;
                     default:
                       page = Scaffold(
-                        appBar: AppBar(
-                          title: const Text('Страница не найдена'),
-                        ),
+                        appBar: AppBar(title: const Text('Страница не найдена')),
                         body: Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
-                                Icons.error_outline,
-                                size: 80,
-                                color: AppColors.error,
-                              ),
+                              const Icon(Icons.error_outline, size: 80, color: AppColors.error),
                               const SizedBox(height: 16),
                               const Text(
                                 'Страница не найдена',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 8),
                               Text(
