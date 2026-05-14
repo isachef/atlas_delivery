@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_colors.dart';
 
 class SearchBarWidget extends StatefulWidget {
   final Function(String) onSearch;
 
-  const SearchBarWidget({Key? key, required this.onSearch}) : super(key: key);
+  const SearchBarWidget({super.key, required this.onSearch});
 
   @override
   State<SearchBarWidget> createState() => _SearchBarWidgetState();
@@ -50,10 +51,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                   )
                   : null,
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 12.0,
-            horizontal: 16.0,
-          ),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
         ),
         style: const TextStyle(color: AppColors.textPrimary, fontSize: 16.0),
         onChanged: widget.onSearch,
