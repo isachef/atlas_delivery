@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../services/connectivity_service.dart';
 
 class ConnectionStatus extends StatelessWidget {
   final Widget child;
 
-  const ConnectionStatus({Key? key, required this.child}) : super(key: key);
+  const ConnectionStatus({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
